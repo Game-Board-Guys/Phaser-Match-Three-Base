@@ -204,8 +204,26 @@ export default function playState() {
                     if (this.gemAt(j, i).orbColor != currentColor || j == fieldSize - 1) {
                         if (colorStreak >= 3) {
                             console.log("VERTICAL :: Length = " + colorStreak + " :: Start = (" + startStreak + "," + i + ") :: Color = " + currentColor);
-                            for (var k = 0; k < colorStreak; k++) {
-                                removeMap[startStreak + k][i]++;
+                            switch (colorStreak) {
+                                case 3:
+                                    for (var k = 0; k < colorStreak; k++) {
+                                        removeMap[startStreak + k][i]++;
+                                    }
+                                    break;
+                                case 4:
+                                    for (var k = 0; k < fieldSize; k++) {
+                                        removeMap[k][i]++;
+                                    }
+                                    break;
+                                default:
+                                    for (var k = 0; k < fieldSize; k++) {
+                                        for (var l = 0; l < fieldSize; l++) {
+                                            if (this.gemAt(k, l).orbColor == currentColor) {
+                                                removeMap[k][l]++;
+                                            }
+                                        }
+                                    }
+                                    break;
                             }
                         }
                         startStreak = j;
@@ -227,8 +245,26 @@ export default function playState() {
                     if (this.gemAt(i, j).orbColor != currentColor || j == fieldSize - 1) {
                         if (colorStreak >= 3) {
                             console.log("HORIZONTAL :: Length = " + colorStreak + " :: Start = (" + i + "," + startStreak + ") :: Color = " + currentColor);
-                            for (var k = 0; k < colorStreak; k++) {
-                                removeMap[i][startStreak + k]++;
+                            switch (colorStreak) {
+                                case 3:
+                                    for (var k = 0; k < colorStreak; k++) {
+                                        removeMap[i][startStreak + k]++;
+                                    }
+                                    break;
+                                case 4:
+                                    for (var k = 0; k < fieldSize; k++) {
+                                        removeMap[i][k]++;
+                                    }
+                                    break;
+                                default:
+                                    for (var k = 0; k < fieldSize; k++) {
+                                        for (var l = 0; l < fieldSize; l++) {
+                                            if (this.gemAt(k, l).orbColor == currentColor) {
+                                                removeMap[k][l]++;
+                                            }
+                                        }
+                                    }
+                                    break;
                             }
                         }
                         startStreak = j;
@@ -358,7 +394,7 @@ export default function playState() {
             }
             return result;
         },
-        holesInCol: function(col) {
+        holesInCol: function (col) {
             var result = 0;
             for (var i = 0; i < fieldSize; i++) {
                 if (gameArray[i][col] == null) {
